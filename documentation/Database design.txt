@@ -1,0 +1,12 @@
+Sitios
+- IdSistio
+- Nombre
+
+Cuentas
+- IdCuenta
+- NombreUsuario
+- Correo
+- Contrasena
+- IdSitio
+
+"HASH de la contraseña maestra"

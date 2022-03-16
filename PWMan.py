@@ -1,6 +1,5 @@
 from tkinter import Label, Tk, mainloop
 
-
 root = Tk()
 
 myLabel = Label(root,text="hola que tal")

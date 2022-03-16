@@ -1,16 +1,29 @@
-from sqlite3 import connect
+from sqlite3 import Row, connect
+from typing import Iterable
 
 conexion = connect("databases/database.db")
+conexion.row_factory = Row
 
-def execute(consulta: str, ):
-    cursor = conexion.cursor()
+def rowToDict(row: Row) -> dict:
+    diccionario = {}
+    for key in row.keys():
+        diccionario[key] = row[key]
 
-    nombreSitio = input("dime el nombre del sitio: ")
-    cursor.execute("Select * from Sitios where upper(nombre) = ?", [nombreSitio.upper()])
+    return diccionario
 
-    filas = cursor.fetchall()
+def execute(consulta: str, parametros: Iterable = [], commit = False) -> list | bool:
+    filas = conexion.execute(consulta, parametros)
 
-    for fila in filas:
-        print(fila)
+    if(not commit):
+        filas = filas.fetchall()
+        resultado = []
+        for fila in filas:
+            resultado.append(rowToDict(fila))
+        return resultado
+    else: 
+        conexion.commit()
+        return bool(filas.rowcount)
 
-execute()
+sitios = execute("select * from sitios where idSitio")
+for sitio in sitios:
+    print(sitio)
